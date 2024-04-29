@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { motion } from "framer-motion"
 const LoginPage = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <motion.div className="flex justify-center items-center" animate={{ y:250 }} >
       <div>
         <h1 className="text-4xl text-center mb-4">Login</h1>
         <form className="max-w-md mx-auto">
@@ -17,7 +17,7 @@ const LoginPage = () => {
             className="block w-full rounded-md border-gray-300 mb-4"
             placeholder="password"
           />
-          <button className="bg-primary hover:bg-[#49243E] text-white font-bold py-2 px-4 rounded">
+          <button className="bg-primary hover:bg-hoverStyle text-white font-bold py-2 px-4 rounded">
             Login
           </button>
         </form>
@@ -25,7 +25,7 @@ const LoginPage = () => {
         Dont have a account ?? Click here <Link className="text-blue-500 underline" to={"/register"}>Register</Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

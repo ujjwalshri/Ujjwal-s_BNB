@@ -1,60 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from "react"
+import { motion } from 'framer-motion';
 import axios from 'axios';
+
 const RegisterPage = () => {
-    const[name, setName]= useState('');
-    const[email, setEmail] = useState('');
-    const[password, setPassword] = useState('');
-    function registerUser(ev){
-      // Here we are trying to send request to the server and for this we will use the axios because that will be easy for us
-     
-      // event.preventdefault will prevent the form to submitting and reloading
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-      ev.preventDefault();
+  function registerUser(ev) {
+    ev.preventDefault();
+    console.log(name,email,password);
+    axios.post('/register', {
+      name: name,
+      email: email,
+      password: password,
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error registering user:', error);
+    });
+  }
 
-
-      axios.post('/register',{
-        name,
-        email,
-        password,
-      })
-    }
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div>
+    <motion.div className="flex justify-center items-center" animate={{ y: 250 }}>
+      <div className="">
         <h1 className="text-4xl text-center mb-4">Register</h1>
-        <form className="max-w-md mx-auto" onSubmit={registerUser}>
-        <input
+        <form className="w-72 mx-auto" onSubmit={registerUser}>
+          <input
             type="text"
             className="block w-full rounded-md border-gray-300 mb-4"
             placeholder="Enter your name"
             value={name}
-            onChange={ev => setName(ev.target.value)}
+            onChange={(ev) => setName(ev.target.value)}
           />
           <input
             type="email"
             className="block w-full rounded-md border-gray-300 mb-4"
             placeholder="your@email.com"
             value={email}
-            onChange={ev => setEmail(ev.target.value)}
+            onChange={(ev) => setEmail(ev.target.value)}
           />
           <input
             type="password"
             className="block w-full rounded-md border-gray-300 mb-4"
             placeholder="password"
             value={password}
-            onChange={ev => setPassword(ev.target.value)}
+            onChange={(ev) => setPassword(ev.target.value)}
           />
-          <button className="bg-primary hover:bg-[#49243E] text-white font-bold py-2 px-4 rounded">
-           Register
+          <button className="bg-primary hover:bg-hoverStyle text-white font-bold py-2 px-4 rounded">
+            Register
           </button>
         </form>
-        <div className='py-2 text-center text-gray-500'> 
-        Already a member ?? Go to <Link className="text-blue-500 underline" to={"/login"}>login</Link>
+        <div className="py-2 text-center text-gray-500">
+          Already a member ?? Go to{' '}
+          <Link className="text-blue-500 underline" to={'/login'}>
+            login
+          </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
