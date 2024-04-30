@@ -8,24 +8,19 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function registerUser(ev) {
+  async function registerUser(ev) {
     ev.preventDefault();
     console.log(name,email,password);
-    axios.post('/register', {
-      name: name,
-      email: email,
-      password: password,
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error('Error registering user:', error);
-    });
+    try {
+      await axios.post('/register', {
+        name,
+        email,
+        password,
+      });
+      alert('Registration successful. Now you can log in');
+    } catch (e) {
+      alert('Registration failed. Please try again later');
+    }
   }
 
   return (
