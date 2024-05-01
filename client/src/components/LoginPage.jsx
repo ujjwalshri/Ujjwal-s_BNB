@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from "framer-motion"
 import axios from 'axios';
+import { UserContext } from '../userContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const[password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   /// handling function of the form on  submit
-
+  const {setUser} = useContext(UserContext)
   async function handleUserLogin(ev){
      ev.preventDefault();
      try{
-      await axios.post('/login',{
+     const {data} =  await axios.post('/login',{
         email,
         password
        })
+       setUser(data);
        alert(`login successfull`);
+
        setRedirect(true);
      }catch(e){
        alert(`incorrect email or password`);

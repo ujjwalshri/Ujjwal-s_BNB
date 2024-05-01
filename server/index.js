@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = 2000;
-
+const cookieParser = require('cookie-parser');
 
 // secret key salt for hashing by using the bcryptjs package
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -20,17 +20,51 @@ const jwtSecret = 'gdsdsdsbwg9hsfs';
 
 // MiddleWares 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173', // Update with your allowed origin
 }));
+
+// anther middlewares for parsing the cookies from the request
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Connection to MongoDB 
 mongoose.connect('mongodb://127.0.0.1:27017/CO-Z')
     .then(() => console.log("Successful DB connected"))
     .catch((e) => console.log("Error occurred while connecting to the database:", e)); // Adding error logging for database connection
 
-// Routes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------> Routes <------------
 app.get('/test', (req, res) => {
     return res.json("test ok");
 });
@@ -66,7 +100,8 @@ app.post('/register', async (req,res) => {
       if (passOk) {
         jwt.sign({
           email:userDoc.email,
-          id:userDoc._id
+          id:userDoc._id,
+          
         }, jwtSecret, {}, (err,token) => {
           if (err) throw err;
           res.cookie('token', token).json(userDoc);
@@ -78,6 +113,26 @@ app.post('/register', async (req,res) => {
       res.json('not found');
     }
   });
+
+  //another routes
+
+
+  app.get('/profile', (req,res)=>{
+    const {token} = req.cookies; 
+    
+    if(token){
+      jwt.verify(token,jwtSecret,{},async(err,userData)=>{
+           if(err) throw err; 
+      const {name,email, _id}=   await User.findById(userData.id);
+
+           res.json({name,email, _id}); 
+      })
+    }else{
+      res.json(null);
+    }
+
+   
+  })
   
 
 
