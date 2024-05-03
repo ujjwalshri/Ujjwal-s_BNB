@@ -133,7 +133,15 @@ app.post('/register', async (req,res) => {
 
    
   })
+
+  /// route for the logout end point 
+
+  app.post('/logout' , (req,res)=>{
+      res.cookie('token', '').json({msg:true})
+  })
   
+
+
 
 
 
