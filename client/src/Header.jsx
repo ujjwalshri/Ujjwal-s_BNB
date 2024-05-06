@@ -8,7 +8,7 @@ const Header = () => {
   const{user}=useContext(UserContext);
   return (
     
-          <header className="p-2 flex justify-between" >
+          <header className="p-2 flex justify-between " >
       <Link to={'/'}href="" className="flex place-items-center gap-1">
       <motion.svg  animate={{
     x: 0,

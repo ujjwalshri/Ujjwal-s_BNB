@@ -4,8 +4,13 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const imageDownloader = require('image-downloader');
+
 const app = express();
+
+
 const PORT = 2000;
+
 const cookieParser = require('cookie-parser');
 
 // secret key salt for hashing by using the bcryptjs package
@@ -21,6 +26,7 @@ const jwtSecret = 'gdsdsdsbwg9hsfs';
 // MiddleWares 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173', // Update with your allowed origin
@@ -140,6 +146,22 @@ app.post('/register', async (req,res) => {
       res.cookie('token', '').json({msg:true})
   })
   
+
+  // route for uploading an image by link
+
+  app.post('/upload-by-link', async(req, res)=>{
+    const {link} = req.body;
+    const newName = 'photo'+Date.now() + '.jpg';
+    await imageDownloader.image({
+      url: link, 
+      dest: __dirname + '/uploads/' + newName,
+    }).then(()=>{
+      return res.json(newName);
+    }).catch(()=>{
+      return res.status(400).json({err:"error occured"});
+    })
+   
+  })
 
 
 
