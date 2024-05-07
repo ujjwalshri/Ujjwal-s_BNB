@@ -2,8 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const PlaceModel = require('./models/Places');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const fs = require('fs');
 const imageDownloader = require('image-downloader');
 
 const app = express();
@@ -162,10 +165,50 @@ app.post('/register', async (req,res) => {
     })
    
   })
+ const photosMiddleware = multer({dest:'uploads'});
+  app.post('/upload', photosMiddleware.array('photos',100),(req, res)=>{
+    const uploadedFiles = [];
+    for (let i = 0; i < req.files.length; i++) {
+     
+      const {path, originalname} = req.files[i];
+
+      const arr = originalname.split('.');
+      const extension = arr[arr.length-1];
+      const newPath = path + '.'+ extension;
+      fs.renameSync(path, newPath);
+      uploadedFiles.push(newPath.replace('uploads/',''));
+    }
+   
+    res.json(uploadedFiles);
+  })
+
+app.post('/places', (req, res)=>{
+  const {token} = req.cookies;
+ 
+  const {
+    title, address, addedPhotos,
+     description, perks, extraInfo, checkInTime ,
+     checkOutTime, maxGuests
+    } = req.body;
 
 
+    
+  jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+    if(err){
+      res.json({err:"err"});
+    }
 
-
+   const placesDoc =  await PlaceModel.create({
+    owner: userData.name,
+    title, address, photos:addedPhotos,
+    description, perks, extraInfo, checkInTime ,
+    checkOutTime, maxGuests
+    })
+    
+    
+    res.json(placesDoc).status(200);
+  })
+})
 
 
 app.listen(PORT, () => console.log(`Server Started at port ${PORT} `));
