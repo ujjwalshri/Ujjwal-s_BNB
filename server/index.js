@@ -190,7 +190,10 @@ app.post('/places', (req, res)=>{
      description, perks, extraInfo, checkInTime ,
      checkOutTime, maxGuests
     } = req.body;
-
+   
+    if(!title || !address || !description || !perks ){
+       throw new Error('An error occurred');
+    }
 
     
   jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
@@ -199,7 +202,7 @@ app.post('/places', (req, res)=>{
     }
 
    const placesDoc =  await PlaceModel.create({
-    owner: userData.name,
+    owner: userData.id,
     title, address, photos:addedPhotos,
     description, perks, extraInfo, checkInTime ,
     checkOutTime, maxGuests
@@ -207,6 +210,20 @@ app.post('/places', (req, res)=>{
     
     
     res.json(placesDoc).status(200);
+  })
+})
+
+
+// route for getting all the places aadded by a particular user we will get the id of a particular user with the help of cookies and then find the data corresponding to that user
+app.get('/places', (req, res)=>{
+  const {token} = req.cookies;
+  jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+    
+     const {id} = userData;
+     
+     const result = await PlaceModel.find({owner:id});
+    
+     res.json(result);
   })
 })
 
