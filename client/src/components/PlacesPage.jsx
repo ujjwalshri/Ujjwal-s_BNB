@@ -42,17 +42,18 @@ const PlacesPage = () => {
        <div>
         {
           places.map(place => (
-            <div key={place.id}>
-              <img src={`http://localhost:2000/uploads/${place.photos[0]}`} className='w-1/2 h-1/2 rounded-3xl ' />
-              <div className='flex gap-2'>
-              <h1 className='text-3xl'>{sNo} </h1>
-              <h1 className='text-3xl'>{place.title}</h1>
+            <Link to={'/account/places/'+place._id}  key={place.id} className='flex gap-10 my-10 border border-primary cursor-pointer'>
+              <img src={`http://localhost:2000/uploads/${place.photos[0]}`} className='w-1/4 h-1/4 rounded-3xl m-2' />
+              <div className='flex my-10'>
+              
+              <h1 className='text-2xl font-mono'>{place.title}</h1>
               
               </div>
-                
-                <p>{place.description}</p>
+                <div className='my-10'>
+                <p className='text-gray-500'>{place.description}</p>
+                </div>
                 {/* Add more JSX elements for other place properties */}
-            </div>
+            </Link>
             
         ))
         }

@@ -228,4 +228,12 @@ app.get('/places', (req, res)=>{
 })
 
 
+
+// end point for getting the places for the particular place id 
+
+app.get('/places/:id' , (req,res)=>{
+  
+})
+
+
 app.listen(PORT, () => console.log(`Server Started at port ${PORT} `));

@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {motion} from 'framer-motion'
 import UploadPhoto from './UploadPhoto'
 import Perks from './Perks'
 import AccountNav from './AccountNav'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 
-const PlacesPageForm = () => { 
+const PlacesPageForm = () => {
+  const id = useParams();
+   
    const [redirect, setRedirect] = useState(false);
    const [title, setTitle] = useState('');
    const [address, setAddress]= useState('');
@@ -19,6 +21,22 @@ const PlacesPageForm = () => {
    const [checkInTime, setCheckInTime ] = useState('');
    const [checkOutTime , setCheckOutTime] = useState('');
    const [maxGuests, setMaxGuests] = useState(1);
+  
+
+   useEffect(()=>{
+    // if we dont have any id means we are on the form page we did not come through clicking on any of the places in the all places
+      if(!id) return; // returning so that everything works as normal in the add new place
+      
+      // now we will call the api and do a get request to get the data regarding that particular place all the data
+      axios.get('/places/'+id);
+
+
+
+   },[id])
+
+
+
+
     async function addNewPlaces(ev){
         ev.preventDefault();
         const data = {
