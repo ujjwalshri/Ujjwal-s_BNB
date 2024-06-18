@@ -231,9 +231,37 @@ app.get('/places', (req, res)=>{
 
 // end point for getting the places for the particular place id 
 
-app.get('/places/:id' , (req,res)=>{
-  
-})
+app.get('/places/:id' , async(req,res)=>{
+   const {id}  = req.params;
+   
+   res.json(await PlaceModel.findById(id));
+ })
+
+ // api end point for the updating of the information of any places 
+ app.put('/places', (req, res)=>{
+  const {token} = req.cookies;
+  const {
+    id, title, address, addedPhotos,
+     description, perks, extraInfo, checkInTime ,
+     checkOutTime, maxGuests
+    } = req.body;
+    jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+      if(err) throw err;
+       const placesDoc = await PlaceModel.findById(id);
+       
+       if(userData.id === placesDoc.owner.toString()){
+        placesDoc.set({
+         
+          title, address, photos:addedPhotos,
+          description, perks, extraInfo, checkInTime ,
+          checkOutTime, maxGuests
+          })
+          placesDoc.save();
+          res.json("OKAY hai ji sab ");
+       }
+
+    });
+ })
 
 
 app.listen(PORT, () => console.log(`Server Started at port ${PORT} `));

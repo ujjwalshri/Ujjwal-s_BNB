@@ -8,7 +8,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 
 const PlacesPageForm = () => {
-  const id = useParams();
+  const {id }= useParams();
    
    const [redirect, setRedirect] = useState(false);
    const [title, setTitle] = useState('');
@@ -18,8 +18,8 @@ const PlacesPageForm = () => {
    const [description, setDescription] = useState('');
    const [perks , setPerks] = useState([]);
    const [extraInfo , setExtraInfo] = useState('');
-   const [checkInTime, setCheckInTime ] = useState('');
-   const [checkOutTime , setCheckOutTime] = useState('');
+   const [checkInTime, setCheckInTime ] = useState('9');
+   const [checkOutTime , setCheckOutTime] = useState('5');
    const [maxGuests, setMaxGuests] = useState(1);
   
 
@@ -28,17 +28,31 @@ const PlacesPageForm = () => {
       if(!id) return; // returning so that everything works as normal in the add new place
       
       // now we will call the api and do a get request to get the data regarding that particular place all the data
-      axios.get('/places/'+id);
-
-
+      axios.get('/places/'+id).then((res)=>{
+          const {data}  = res;
+          console.log(data);
+          setTitle(data.title);
+          setAddress(data.address);
+          setAddedPhotos(data.photos);
+          setDescription(data.description);
+          setPerks(data.perks);
+          setExtraInfo(data.extraInfo);
+          setCheckInTime(data.checkInTime);
+          setCheckOutTime(data.checkOutTime);
+          setMaxGuests(data.maxGuests);
+      })
+      
 
    },[id])
 
 
 
 
-    async function addNewPlaces(ev){
+    async function savePlace(ev){
         ev.preventDefault();
+        
+
+
         const data = {
          title,
          address,
@@ -50,12 +64,21 @@ const PlacesPageForm = () => {
          checkOutTime,
          maxGuests
         }
-       await axios.post('/places',data).then(()=>{
-        setRedirect(true); 
-       }).catch(()=>{
-        alert('Fill the informations correctly');
-        
-       })
+        if(id){
+          // update the data of that particular place by doing a put request to the server which is handling the database
+          await axios.put('/places',{id, ...data}).then(()=>{
+            setRedirect(true); 
+           }).catch(()=>{
+            alert('Fill the informations correctly');
+           })
+           
+        }else{
+          await axios.post('/places',data).then(()=>{
+            setRedirect(true); 
+           }).catch(()=>{
+            alert('Fill the informations correctly');
+           })
+        }
        
        
       
@@ -71,7 +94,7 @@ const PlacesPageForm = () => {
     <div>
     <AccountNav/>
     <motion.div className='border border-gray-800 p-5 rounded-3xl m-20' animate={{y:20}}>
-      <form onSubmit={addNewPlaces} >
+      <form onSubmit={savePlace} >
         <h2 className='text-xl'>title</h2>
       <input type="text" 
       value={title} 
