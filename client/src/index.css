@@ -9,5 +9,5 @@ input[type="text"],input[type="password"],input[type="email"],input[type="number
   height: 140px;
 } */
 button{
-  @apply bg-[#704264] w-full rounded-3xl text-white p-1.5
+  @apply bg-[#704264]  rounded-3xl text-white p-1.5
 }

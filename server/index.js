@@ -264,4 +264,25 @@ app.get('/places/:id' , async(req,res)=>{
  })
 
 
+
+
+// Api end point for getting all the photos 
+
+app.get('/allPlaces', async(req,res)=>{
+    res.json(await PlaceModel.find());
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(PORT, () => console.log(`Server Started at port ${PORT} `));
