@@ -188,7 +188,7 @@ app.post('/places', (req, res)=>{
   const {
     title, address, addedPhotos,
      description, perks, extraInfo, checkInTime ,
-     checkOutTime, maxGuests
+     checkOutTime, maxGuests, price
     } = req.body;
    
     if(!title || !address || !description || !perks ){
@@ -205,7 +205,7 @@ app.post('/places', (req, res)=>{
     owner: userData.id,
     title, address, photos:addedPhotos,
     description, perks, extraInfo, checkInTime ,
-    checkOutTime, maxGuests
+    checkOutTime, maxGuests, price
     })
     
     
@@ -243,18 +243,18 @@ app.get('/places/:id' , async(req,res)=>{
   const {
     id, title, address, addedPhotos,
      description, perks, extraInfo, checkInTime ,
-     checkOutTime, maxGuests
+     checkOutTime, maxGuests, price
     } = req.body;
     jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
       if(err) throw err;
        const placesDoc = await PlaceModel.findById(id);
-       
+      
        if(userData.id === placesDoc.owner.toString()){
         placesDoc.set({
          
           title, address, photos:addedPhotos,
           description, perks, extraInfo, checkInTime ,
-          checkOutTime, maxGuests
+          checkOutTime, maxGuests, price
           })
           placesDoc.save();
           res.json("OKAY hai ji sab ");

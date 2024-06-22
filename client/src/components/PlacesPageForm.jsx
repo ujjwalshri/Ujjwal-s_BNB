@@ -14,7 +14,7 @@ const PlacesPageForm = () => {
    const [title, setTitle] = useState('');
    const [address, setAddress]= useState('');
    const [addedPhotos, setAddedPhotos]  = useState([]);
-   
+   const[price, setPrice] = useState(0);
    const [description, setDescription] = useState('');
    const [perks , setPerks] = useState([]);
    const [extraInfo , setExtraInfo] = useState('');
@@ -40,6 +40,7 @@ const PlacesPageForm = () => {
           setCheckInTime(data.checkInTime);
           setCheckOutTime(data.checkOutTime);
           setMaxGuests(data.maxGuests);
+          setPrice(data.price);
       })
       
 
@@ -62,7 +63,8 @@ const PlacesPageForm = () => {
          extraInfo,
          checkInTime,
          checkOutTime,
-         maxGuests
+         maxGuests,
+         price
         }
         if(id){
           // update the data of that particular place by doing a put request to the server which is handling the database
@@ -129,6 +131,10 @@ const PlacesPageForm = () => {
         <div>
         <label>Max Guests</label>
         <input type="number" value={maxGuests} onChange={ev=> setMaxGuests(ev.target.value)} placeholder='1...2..'/>
+        </div>
+        <div>
+        <label>Price</label>
+        <input type="number" value={price} onChange={ev=> setPrice(ev.target.value)} placeholder='1...2..'/>
         </div>
       </div>
       <button className='bg-primary hover:bg-secondary h-20 my-8 '>SAVE INFO</button>
