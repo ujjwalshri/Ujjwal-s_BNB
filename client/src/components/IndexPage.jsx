@@ -13,6 +13,7 @@ const IndexPage = () => {
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-9 gap-y-9 my-8 '  >
     {places.length > 0 && places.map(place => (
+      <Link to={'/place/'+place._id}>
     <motion.div className=' ' whileHover={{scale:1.06}}>
       <div className=''>
       {place.photos?.[0] && (
@@ -25,6 +26,7 @@ const IndexPage = () => {
      <h3 className=''><span className='font-bold'>&#8377;{place.price}</span> / night</h3>
      
     </motion.div>
+    </Link>
     ))} 
     </div>
   )
