@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
 const imageDownloader = require('image-downloader');
-
+const BookingsModel = require('./models/Bookings');
 const app = express();
 
 
@@ -272,8 +272,12 @@ app.get('/allPlaces', async(req,res)=>{
     res.json(await PlaceModel.find());
 })
 
+// End point for creating booking of the user 
 
 
+app.post('/booking', (req, res)=>{
+  const {place, checkInTime, checkOutTime, numberOfGuests, name, phone} = req.body;
+})
 
 
 
