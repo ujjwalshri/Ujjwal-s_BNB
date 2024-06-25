@@ -275,8 +275,19 @@ app.get('/allPlaces', async(req,res)=>{
 // End point for creating booking of the user 
 
 
-app.post('/booking', (req, res)=>{
-  const {place, checkInTime, checkOutTime, numberOfGuests, name, phone} = req.body;
+app.post('/bookings', (req, res)=>{
+  const {place, checkInTime, checkOutTime, numberOfGuests,  fullName, phoneNumber, price} = req.body;
+  
+  console.log(place);
+   BookingsModel.create({
+    place : place, checkInTime, checkOutTime, numberOfGuests, name:fullName, phone : phoneNumber,price
+  }).then((doc)=>{
+    
+    res.json(doc);
+    
+  }).catch((err)=>{
+     throw err;
+  })
 })
 
 

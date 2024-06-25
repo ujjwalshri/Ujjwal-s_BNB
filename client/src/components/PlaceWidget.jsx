@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import {motion} from 'framer-motion'
-
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 const PlaceWidget = ({place}) => {
     const[noOfGuests , setNoOfGuests] = useState('');
     const[checkInTime, setCheckInTime] = useState('');
     const[checkOutTime, setCheckOutTime] = useState('');
     const[phoneNumber , setPhoneNumber] = useState('');
     const[fullName, setFullName] = useState('');
+    const[redirect, setRedirect] = useState(false);
     function countDaysBetween(date1, date2) {
         // Parse the dates to ensure they are Date objects
         let startDate = new Date(date1);
@@ -25,7 +27,23 @@ const PlaceWidget = ({place}) => {
     if(checkInTime && checkOutTime){
      numberOfNights = countDaysBetween(checkInTime, checkOutTime);
     }
+
+    async function bookPlace(){
+      console.log(phoneNumber);
+      console.log(fullName);
+      const data ={
+        noOfGuests, checkInTime, checkOutTime, phoneNumber, fullName, place:place._id, price: numberOfNights * place.price
+      }
     
+     const responce = await axios.post('/bookings', data);
+    
+     const bookingId = responce.data._id;
+     setRedirect(`/account/bookings/${bookingId}`);
+    }
+
+    if(redirect){
+      return <Navigate to={redirect} />
+    }
     
   return (
     <div>
@@ -68,6 +86,7 @@ const PlaceWidget = ({place}) => {
           </div>
         </div>
         <motion.button
+        onClick={bookPlace}
           className=" w-full h-full mb-2 bg-secondary "
           whileHover={{ scale: 1.04 }}
         >
