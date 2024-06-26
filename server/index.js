@@ -15,6 +15,7 @@ const app = express();
 const PORT = 2000;
 
 const cookieParser = require('cookie-parser');
+const { resolve } = require('path');
 
 // secret key salt for hashing by using the bcryptjs package
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -275,12 +276,13 @@ app.get('/allPlaces', async(req,res)=>{
 // End point for creating booking of the user 
 
 
-app.post('/bookings', (req, res)=>{
+app.post('/bookings', async (req, res)=>{
   const {place, checkInTime, checkOutTime, numberOfGuests,  fullName, phoneNumber, price} = req.body;
+  const userData = await getUserData(req);
   
-  console.log(place);
+  
    BookingsModel.create({
-    place : place, checkInTime, checkOutTime, numberOfGuests, name:fullName, phone : phoneNumber,price
+    place : place,user:userData.id, checkInTime, checkOutTime, numberOfGuests, name:fullName, phone : phoneNumber,price
   }).then((doc)=>{
     
     res.json(doc);
@@ -290,7 +292,29 @@ app.post('/bookings', (req, res)=>{
   })
 })
 
+function getUserData(req){
+  const {token} = req.cookies;
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+      if(err) throw err;
+      resolve(userData);
+    })
+  })
+  
 
+}
+
+
+
+app.get('/bookings', async (req, res) => {
+  try {
+    const userData = await getUserData(req);
+    const bookings = await BookingsModel.find({ user: userData.id}).populate('place');
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching bookings' });
+  }
+});
 
 
 

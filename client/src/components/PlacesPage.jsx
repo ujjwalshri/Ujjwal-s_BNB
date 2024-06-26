@@ -42,7 +42,9 @@ const PlacesPage = () => {
        <div>
         {
           places.map(place => (
-            <Link to={'/account/places/'+place._id}  key={place.id} className='flex gap-10 my-10 border border-primary cursor-pointer'>
+            <Link to={'/account/places/'+place._id}  key={place.id} >
+              <motion.div className='flex gap-10 my-10 border border-primary cursor-pointer rounded-2xl'    initial={{ x: '70vw' }}   animate={{ x: 0 }}   transition={{ type: 'spring', stiffness: 50, damping: 20, duration:0.1 }}  
+   >
               <img src={`http://localhost:2000/uploads/${place.photos[0]}`} className='w-1/4 h-1/4 rounded-3xl m-2' />
               <div className='flex my-10'>
               
@@ -52,6 +54,7 @@ const PlacesPage = () => {
                 <div className='my-10'>
                 <p className='text-gray-500'>{place.description}</p>
                 </div>
+              </motion.div>
                 {/* Add more JSX elements for other place properties */}
             </Link>
             

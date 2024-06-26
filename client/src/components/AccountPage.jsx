@@ -38,7 +38,7 @@ const AccountPage = () => {
        <AccountNav/>
 
        {true && (
-        <motion.div className='h-inherit max-w-lg mx-auto text-center py-5 flex ' animate={{y:100}} transition={{duration:0.5}}>
+        <motion.div className='h-inherit max-w-lg mx-auto text-center py-5 flex ' animate={{y:50}} transition={{duration:0.5}}>
             logged in as {user.name} ({user.email})
             <button className='max-w-full  bg-primary'
             onClick={logOut}
