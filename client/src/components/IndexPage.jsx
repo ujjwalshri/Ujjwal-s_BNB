@@ -23,15 +23,17 @@ const IndexPage = () => {
         delay: 0.2,
         ease: [0, 0.71, 0.2, 1.01]
       }}   >
-      <motion.div className=''>
+      <motion.div className='shadows shadow-lg shadow-black rounded-3xl'>
       {place.photos?.[0] && (
         <img className='object-cover aspect-square rounded-3xl mb-1 cursor-pointer' src={`http://localhost:2000/uploads/${place.photos[0]}`} alt="" />
       )}
       </motion.div>
       
-     <h1 className='text-sm truncate'>{place.title}</h1>
+    <div className='mt-4'>
+    <h1 className='text-sm truncate'>{place.title}</h1>
      <h2 className='text-md font-bold text-gray-600'>{place.address}</h2>
      <h3 className=''><span className='font-bold'>&#8377;{place.price}</span> / night</h3>
+    </div>
      
     </motion.div>
     </Link>

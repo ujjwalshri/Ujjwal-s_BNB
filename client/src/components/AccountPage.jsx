@@ -32,13 +32,13 @@ const AccountPage = () => {
       
 
   return (
-    <motion.div className='py-8' animate={{y:15}} initial={{ opacity: 0 } } 
+    <motion.div className='py-8 h-[100vh] ' animate={{y:15}} initial={{ opacity: 0 } } 
     whileInView={{ opacity: 1  }}  >
    
        <AccountNav/>
 
        {true && (
-        <motion.div className='h-inherit max-w-lg mx-auto text-center py-5 flex ' animate={{y:50}} transition={{duration:0.5}}>
+        <motion.div className=' max-w-lg mx-auto text-center py-5 flex ' animate={{y:50}} transition={{duration:0.5}}>
             logged in as {user.name} ({user.email})
             <button className='max-w-full  bg-primary'
             onClick={logOut}
