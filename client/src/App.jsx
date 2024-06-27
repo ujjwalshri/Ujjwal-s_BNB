@@ -12,7 +12,7 @@ import SinglePlacePage from "./components/SinglePlacePage"
 import BookingsPage from "./components/BookingsPage"
 import SingleBookingPage from "./components/SingleBookingPage"
 
-axios.defaults.baseURL = 'https://ujjwal-s-bnb.vercel.app';
+axios.defaults.baseURL = 'http://localhost:2000';
 axios.defaults.withCredentials = true;
 
 function App() {
